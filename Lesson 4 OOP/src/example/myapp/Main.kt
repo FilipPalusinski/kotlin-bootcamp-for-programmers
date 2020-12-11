@@ -1,5 +1,7 @@
 package example.myapp
 
+import example.myapp.decor.Decoration
+
 fun main(args: Array<String>){
     //buildAquarium()
     makeFish()
