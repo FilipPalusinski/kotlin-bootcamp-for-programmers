@@ -3,7 +3,7 @@
 fun main(){
     //runPairsAndTriples()
     //runLists()
-    runHashMaps()
+    //runHashMaps()
 }
 
 fun runHashMaps(){
