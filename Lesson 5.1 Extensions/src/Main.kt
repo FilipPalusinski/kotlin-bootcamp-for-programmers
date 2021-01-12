@@ -4,7 +4,48 @@ fun main(){
     //runPairsAndTriples()
     //runLists()
     //runHashMaps()
+
+    //extension function
+//    fun String.hasSpaces(): Boolean {
+//        val found = this.find { it == ' ' }
+//        return found != null
+//    }
+
+    //simplified function
+    fun String.hasSpaces() = find { it == ' ' } != null
+    println("Does it have spaces?".hasSpaces())
+
+    //another extension function
+    val plant = AquariumPlant("green", 5)
+    println(plant.isRed())
+    //extension property call
+    println(plant.isGreen)
+
+
+
+    //nullable receiver
+    val plant2: AquariumPlant? = null
+    plant2.pull()
+
 }
+
+class AquariumPlant(val color:String, private val size: Int)
+
+//public variable can be accessed
+fun AquariumPlant.isRed() = color == "red"
+//private variable can't be accessed
+//fun AquariumPlant.isBig() = size > 50
+
+//extension property
+val AquariumPlant.isGreen: Boolean
+    get() = color == "green"
+//nullable receiver
+fun AquariumPlant?.pull(){
+    this?.apply {
+        println("removing $this")
+    }
+}
+
 
 fun runHashMaps(){
     //hashMaps that matches symptoms, the keys, with diseases of fish, the values.
