@@ -21,7 +21,24 @@ class LakeWater: WaterSupply(true){
     }
 }
 
-class Aquarium<T>(val waterSupply: T)
+class Aquarium<out T: WaterSupply>(val waterSupply: T){
+    fun addWater(cleaner: Cleaner<T>) {
+        if(waterSupply.needsProcessing){
+            cleaner.clean(waterSupply)
+        }
+        println("water added")
+    }
+}
+
+fun addItemTo(aquarium: Aquarium<WaterSupply>) = println("item added")
+
+interface Cleaner<in T: WaterSupply> {
+    fun clean(waterSupply: T)
+}
+
+class TapWaterCleaner : Cleaner<TapWater> {
+    override fun clean(waterSupply: TapWater) = waterSupply.addChemicalCleaners()
+}
 
 fun genericsExample() {
     //val aquarium = Aquarium<TapWater>(TapWater())
@@ -32,29 +49,35 @@ fun genericsExample() {
     println("water needs processing: ${aquarium.waterSupply.needsProcessing}")
 
     //any type value passed to T
-    val aquarium2 = Aquarium("string")
-    println(aquarium2.waterSupply)
+//    val aquarium2 = Aquarium("string")
+//    println(aquarium2.waterSupply)
+//
+//    //null value passed to T
+//    val aquarium3 = Aquarium(null)
+//    if(aquarium3.waterSupply == null){
+//        println("waterSupply is null")
+//    }
+//
+//    class Aquarium2<T: Any>(val waterSupply: T)
+//    //val aquarium4 = Aquarium2(null)
+//    //null cant be passed
+//
+//    class Aquarium3<T: WaterSupply>(val waterSupply: T){
+//        fun addWater(){
+//            check(!waterSupply.needsProcessing) { "water supply needs processing first" }
+//            println("adding water from $waterSupply")
+//        }
+//    }
+//    //val aquarium5 = Aquarium3("String")
+//    //for this case string cant be pass because its not a subtype of WaterSupply.
+//    val aquarium4 = Aquarium3(LakeWater())
+//    aquarium4.waterSupply.filter()
+//    aquarium4.addWater()
 
-    //null value passed to T
-    val aquarium3 = Aquarium(null)
-    if(aquarium3.waterSupply == null){
-        println("waterSupply is null")
-    }
+    addItemTo(aquarium)
 
-    class Aquarium2<T: Any>(val waterSupply: T)
-    //val aquarium4 = Aquarium2(null)
-    //null cant be passed
+    val cleaner = TapWaterCleaner()
+    aquarium.addWater(cleaner)
 
-    class Aquarium3<T: WaterSupply>(val waterSupply: T){
-        fun addWater(){
-            check(!waterSupply.needsProcessing) { "water supply needs processing first" }
-            println("adding water from $waterSupply")
-        }
-    }
-    //val aquarium5 = Aquarium3("String")
-    //for this case string cant be pass because its not a subtype of WaterSupply.
-    val aquarium4 = Aquarium3(LakeWater())
-    aquarium4.waterSupply.filter()
-    aquarium4.addWater()
 
 }
